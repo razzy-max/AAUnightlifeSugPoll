@@ -14,13 +14,18 @@ const json = (statusCode, payload) => ({
   body: JSON.stringify(payload),
 });
 
-const readBody = async (event) => {
-  if (!event.body) return {};
-  try {
-    return JSON.parse(event.body);
-  } catch {
-    return {};
-  }
+const readBody = async (req) => {
+  return new Promise((resolve) => {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch {
+        resolve({});
+      }
+    });
+  });
 };
 
 export default async function handler(req, res) {
@@ -34,6 +39,8 @@ export default async function handler(req, res) {
 
   const body = await readBody(req);
   const { password, action, payload = {} } = body;
+
+  console.log("🔓 Password check:", { received: !!password, expected: !!adminPassword, match: password === adminPassword });
 
   if (password !== adminPassword) {
     return res.status(401).json({ error: "Invalid admin password" });
