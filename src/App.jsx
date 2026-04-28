@@ -138,7 +138,7 @@ export default function SUGPoll() {
 
       setCats(remoteCategories.length ? remoteCategories : INIT_CATS);
       setCands(remoteCandidates.length ? remoteCandidates : INIT_CANDS);
-      setVotes(remoteVotes.length ? remoteVotes : INIT_VOTES);
+      setVotes(remoteVotes); // Use actual data from Supabase, empty array means reset/no votes
       setMyVotes(
         remoteVotes.reduce((acc, vote) => {
           if (vote.vh === VOTER_ID) acc[vote.catid] = vote.cid;
@@ -189,7 +189,7 @@ export default function SUGPoll() {
 
     setCats(remoteCategories.length ? remoteCategories : INIT_CATS);
     setCands(remoteCandidates.length ? remoteCandidates : INIT_CANDS);
-    setVotes(remoteVotes.length ? remoteVotes : INIT_VOTES);
+    setVotes(remoteVotes); // Use actual data from Supabase, empty array means reset/no votes
     setMyVotes(
       remoteVotes.reduce((acc, vote) => {
         if (vote.vh === VOTER_ID) acc[vote.catid] = vote.cid;

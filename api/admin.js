@@ -56,7 +56,7 @@ export default async function handler(req, res) {
           .from("categories")
           .insert({
             name: payload.name,
-            desc: payload.desc || "",
+            description: payload.desc || "",
             active: true,
           })
           .select()

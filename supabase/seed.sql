@@ -1,3 +1,6 @@
+-- Clear all votes first (so resets don't fall back to seed data)
+delete from public.votes where voter_hash like 'seed-%';
+
 insert into public.categories (id, name, description, active, sort_order)
 values
   (1, 'SUG President', 'Overall student body leader', true, 1),
