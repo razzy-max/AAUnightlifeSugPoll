@@ -4,6 +4,8 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const adminPassword = process.env.ADMIN_ACCESS_PASSWORD;
 
+console.log("🔐 Admin API loaded - password set:", !!adminPassword);
+
 const supabase = supabaseUrl && serviceRoleKey ? createClient(supabaseUrl, serviceRoleKey) : null;
 
 const json = (statusCode, payload) => ({
