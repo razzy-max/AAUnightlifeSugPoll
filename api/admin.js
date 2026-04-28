@@ -102,7 +102,10 @@ export default async function handler(req, res) {
       }
 
       case "delete-candidate": {
-        const { error } = await supabase.from("candidates").delete().eq("id", payload.id);
+          // Delete all votes for this candidate first (cascade)
+          await supabase.from("votes").delete().eq("candidate_id", payload.id);
+          // Then delete the candidate
+          const { error } = await supabase.from("candidates").delete().eq("id", payload.id);
         if (error) throw error;
         console.log("✓ Deleted candidate", payload.id);
         return res.status(200).json({ ok: true });
