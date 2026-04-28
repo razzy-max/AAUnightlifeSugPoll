@@ -104,12 +104,14 @@ export default async function handler(req, res) {
       case "delete-candidate": {
         const { error } = await supabase.from("candidates").delete().eq("id", payload.id);
         if (error) throw error;
+        console.log("✓ Deleted candidate", payload.id);
         return res.status(200).json({ ok: true });
       }
 
       case "reset-votes": {
         const { error } = await supabase.from("votes").delete().neq("id", 0);
         if (error) throw error;
+        console.log("✓ Reset all votes");
         return res.status(200).json({ ok: true });
       }
 
@@ -117,6 +119,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Unknown action" });
     }
   } catch (error) {
+    console.error("❌ Admin action error:", error);
     return res.status(500).json({ error: error?.message || "Unknown error" });
   }
 }
