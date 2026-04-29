@@ -116,7 +116,7 @@ export default function SUGPoll() {
     }
   }, [activeCatTab, page]);
 
-  useEffect(() {
+  useEffect(() => {
     if (!supabase) {
       setLoadingData(false);
       return;
