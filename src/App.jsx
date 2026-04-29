@@ -814,6 +814,7 @@ export default function SUGPoll() {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
       `}</style>
 
       {/* Toast */}
@@ -843,23 +844,27 @@ export default function SUGPoll() {
       </header>
 
       <main style={{ flex: 1, width: "100%" }}>
-        {loadingData && supabase && (
-          <div style={{ margin: "16px auto 0", maxWidth: 1120, padding: "0 16px" }}>
-            <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", color: "#9a3412", borderRadius: 12, padding: "10px 14px", fontSize: 13, textAlign: "left" }}>
-              Loading live Supabase data...
+        {loadingData && supabase ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100dvh" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ width: 48, height: 48, border: "3px solid #e5e7eb", borderTop: "3px solid #0d2137", borderRadius: "50%", margin: "0 auto 20px", animation: "spin 0.8s linear infinite" }} />
+              <p style={{ color: "#6b7280", fontSize: 15, margin: 0 }}>Loading poll data...</p>
             </div>
           </div>
+        ) : (
+          <>
+            {dbError && (
+              <div style={{ margin: "16px auto 0", maxWidth: 1120, padding: "0 16px" }}>
+                <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", color: "#1d4ed8", borderRadius: 12, padding: "10px 14px", fontSize: 13, textAlign: "left" }}>
+                  {dbError}
+                </div>
+              </div>
+            )}
+            {page === "vote" && renderVotePage()}
+            {page === "results" && renderResults()}
+            {page === "admin" && (adminIn ? renderAdmin() : renderLogin())}
+          </>
         )}
-        {dbError && (
-          <div style={{ margin: "16px auto 0", maxWidth: 1120, padding: "0 16px" }}>
-            <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", color: "#1d4ed8", borderRadius: 12, padding: "10px 14px", fontSize: 13, textAlign: "left" }}>
-              {dbError}
-            </div>
-          </div>
-        )}
-        {page === "vote" && renderVotePage()}
-        {page === "results" && renderResults()}
-        {page === "admin" && (adminIn ? renderAdmin() : renderLogin())}
       </main>
 
       <footer style={{ background: "#091929", padding: "22px 28px", marginTop: 40, textAlign: "center" }}>
