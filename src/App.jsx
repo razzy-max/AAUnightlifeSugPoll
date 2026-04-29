@@ -109,6 +109,14 @@ export default function SUGPoll() {
   }, []);
 
   useEffect(() => {
+    // Scroll active category tab into view
+    const activeTabBtn = document.querySelector(`[data-cat-id="${activeCatTab}"]`);
+    if (activeTabBtn) {
+      activeTabBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [activeCatTab, page]);
+
+  useEffect(() {
     if (!supabase) {
       setLoadingData(false);
       return;
@@ -347,7 +355,7 @@ export default function SUGPoll() {
         <div style={{ background: "#091929", borderBottom: "1px solid rgba(255,255,255,0.07)", overflowX: "auto" }}>
           <div style={{ display: "flex", maxWidth: 1120, margin: "0 auto", padding: "0 16px", width: "100%" }}>
             {cats.map(cat => (
-              <button key={cat.id} onClick={() => setActiveCatTab(cat.id)} style={{ padding: "13px 22px", border: "none", background: "transparent", color: activeCatTab === cat.id ? "#f0a500" : "rgba(255,255,255,0.4)", borderBottom: `2px solid ${activeCatTab === cat.id ? "#f0a500" : "transparent"}`, cursor: "pointer", fontSize: 14, fontWeight: activeCatTab === cat.id ? 600 : 400, whiteSpace: "nowrap", transition: "all 0.15s", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8 }}>
+              <button key={cat.id} data-cat-id={cat.id} onClick={() => setActiveCatTab(cat.id)} style={{ padding: "13px 22px", border: "none", background: "transparent", color: activeCatTab === cat.id ? "#f0a500" : "rgba(255,255,255,0.4)", borderBottom: `2px solid ${activeCatTab === cat.id ? "#f0a500" : "transparent"}`, cursor: "pointer", fontSize: 14, fontWeight: activeCatTab === cat.id ? 600 : 400, whiteSpace: "nowrap", transition: "all 0.15s", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8 }}>
                 {cat.name}
                 {!cat.active && <span style={{ fontSize: 9, background: "#7f1d1d", color: "#fca5a5", padding: "2px 7px", borderRadius: 4, letterSpacing: 0.5, textTransform: "uppercase" }}>Closed</span>}
               </button>
